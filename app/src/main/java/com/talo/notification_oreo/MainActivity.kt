@@ -3,6 +3,8 @@ package com.talo.notification_oreo
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -28,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         channelName: String = "Note"
     ): NotificationManager {
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        val intent = Intent(this, SecondActivity::class.java)
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
         val channel =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH).also {
@@ -39,6 +43,7 @@ class MainActivity : AppCompatActivity() {
                         .setSubText("Info")
                         .setWhen(System.currentTimeMillis())
                         .setChannelId(channelId)
+                        .setContentIntent(pendingIntent)
                     manager.notify(1, builder.build())
                 }
 
